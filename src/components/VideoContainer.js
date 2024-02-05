@@ -7,7 +7,7 @@ const VideoContainer = () => {
   const [videos, setVideos] = useState([]);
 
   useEffect(() => {
-    // getVideos(); 
+    getVideos();  
   }, []);
 
   const getVideos = async () => {
