@@ -10,20 +10,18 @@ const ButtonList = () => {
     "Funny",
     "Vlog",
     "PUBG",
-    "News",
     "Cricket",
     "Health",
     "Cooking",
-    "Valentine's",
     "Netflix",
     "Food",
     "Traveling",
     "React",
-    "Interview"
+    "Interview",
   ];
 
   return (
-    <div  className="flex ">
+    <div className="flex ">
       {list.map((items, index) => (
         <div key={index}>
           <Button name={items} />

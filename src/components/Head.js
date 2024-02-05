@@ -5,13 +5,18 @@ import {
   YOUTUBE_LOGO_URL,
   YOUTUBE_SEARCH_API,
 } from "../utils/constants";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleMenu } from "../utils/appSlice";
+import { cacheResults } from "../utils/searchSlice";
 
 const Head = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSetsuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+
+  const searchCache = useSelector((store) => store.search);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // API Call
@@ -21,7 +26,11 @@ const Head = () => {
     // Decline the api call
 
     const timer = setTimeout(() => {
-      getSearchSuggestions();
+      if (searchCache[searchQuery]) {
+        setSetsuggestions(searchCache[searchQuery]);
+      } else {
+        getSearchSuggestions();
+      }
     }, 200);
 
     return () => {
@@ -52,9 +61,14 @@ const Head = () => {
     const res = await data.json();
     // console.log(res[1]);
     setSetsuggestions(res[1]);
-  };
 
-  const dispatch = useDispatch();
+    // update Cache
+    dispatch(
+      cacheResults({
+        [searchQuery]: res[1],
+      })
+    );
+  };
 
   const toggleMenuHandler = () => {
     dispatch(toggleMenu());
@@ -80,8 +94,12 @@ const Head = () => {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            onFocus={() => { setShowSuggestions(true) }}
-            onBlur={() => { setShowSuggestions(false) }}
+            onFocus={() => {
+              setShowSuggestions(true);
+            }}
+            onBlur={() => {
+              setShowSuggestions(false);
+            }}
           />
           <button className="border border-gray-400 px-5 py-2 rounded-r-full bg-gray-100">
             🔍
