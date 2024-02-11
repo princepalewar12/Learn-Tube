@@ -21,8 +21,8 @@ const VideoContainer = () => {
       {/* The below AdVideoCard is a higher order component(HOC) */}
       {videos[0] && <AdVideoCard info={videos[0]}/>}
       {videos.map((video) => (
-        <div>
-          <Link to={"/watch?v=" + video.id} key={video.id}>
+        <div key={video.id}>
+          <Link to={"/watch?v=" + video.id} >
             <VideoCard  info={video} />
           </Link>
         </div>

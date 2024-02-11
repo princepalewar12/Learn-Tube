@@ -5,35 +5,41 @@ import appStore from "./utils/store";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import MainContainer from "./components/MainContainer";
 import WatchPage from "./components/WatchPage";
-import Demo from "./components/Demo";
+import Demo from "./components/useMemo";
+import Demo2 from "./components/useRef";
 
 const appRouter = createBrowserRouter([
   {
     path: "/",
-    element:<Body/>,
-    children:[
+    element: <Body />,
+    children: [
       {
-        path:"/",
-        element:<MainContainer/>
+        path: "/",
+        element: <MainContainer />,
       },
       {
-        path: "/watch", 
-        element:<WatchPage/>
+        path: "/watch",
+        element: <WatchPage />,
       },
       {
-        path: "/demo", 
-        element:<Demo/>
-      }
-    ]
-  }
-])
+        path: "/demo",
+        element: (
+          <>
+            <Demo />
+            <Demo2 />
+          </>
+        ),
+      },
+    ],
+  },
+]);
 
 function App() {
   return (
     <Provider store={appStore}>
       <div>
         <Head />
-        <RouterProvider router={appRouter}/>
+        <RouterProvider router={appRouter} />
       </div>
     </Provider>
   );
